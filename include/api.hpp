@@ -7,6 +7,14 @@
 #ifndef SCREEPS_API_H
 #define SCREEPS_API_H
 
+Map<String,JSObject> rooms();
+Map<String,JSObject> creeps();
+Map<String,JSObject> flags();
+Map<String,JSObject> spawns();
+Map<String,JSObject> structures();
+Map<String,JSObject> constructionSites();
+
+
 bool Util_creepExists(String name);
 
 bool Util_roomVisible(String name);

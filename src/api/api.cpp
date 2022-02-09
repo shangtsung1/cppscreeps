@@ -8,6 +8,30 @@
 
 using namespace screeps;
 
+Map<String,JSObject> rooms(){
+    return js_object_to_map(tick->Game["rooms"]);
+}
+
+Map<String,JSObject> creeps(){
+    return js_object_to_map(tick->Game["creeps"]);
+}
+
+Map<String,JSObject> flags(){
+    return js_object_to_map(tick->Game["flags"]);
+}
+
+Map<String,JSObject> spawns(){
+    return js_object_to_map(tick->Game["spawns"]);
+}
+
+Map<String,JSObject> structures(){
+    return js_object_to_map(tick->Game["structures"]);
+}
+
+Map<String,JSObject> constructionSites(){
+    return js_object_to_map(tick->Game["constructionSites"]);
+}
+
 bool Util_creepExists(String name){
     return tick->Utils.call<bool>("creepExists",name);
 }

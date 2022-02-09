@@ -31,7 +31,7 @@ void init() {//hello, tis a marker
 }
 
 void setupFlags(){
-    Map<String,JSObject> rooms_map = js_object_to_map(tick->Game["rooms"]);
+    Map<String,JSObject> rooms_map = rooms();
     for(auto const& kv : rooms_map) {
         String const &roomName = kv.first;
         JSObject const &room = kv.second;
@@ -123,7 +123,7 @@ void processCreepActions(String flagName, JSObject flag){
 }
 
 void processFlags(){
-    Map<String,JSObject> flags_map = js_object_to_map(tick->Game["flags"]);
+    Map<String,JSObject> flags_map = flags();
     for(auto const& kv : flags_map) {
         String const &flagName = kv.first;
         JSObject const &flag = kv.second;
@@ -135,7 +135,7 @@ void processFlags(){
 }
 
 void mem_gc(){
-    Map<String,JSObject> creeps_map = js_object_to_map(tick->Memory["creeps"]);
+    Map<String,JSObject> creeps_map = creeps();
     for(auto const& kv : creeps_map) {
         String const &creepName = kv.first;
         if(!Util_creepExists(creepName)){
