@@ -21,6 +21,7 @@ inline std::map<std::string,std::string> resourceCollectionRooms = makeResourceC
   #include <emscripten/bind.h>
 
   #define Map std::map
+  #define Vector std::vector
   #define String std::string
   #define Exception std::exception
   #define JSObject emscripten::val

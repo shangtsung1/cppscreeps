@@ -1,3 +1,5 @@
+
+
 var Utils = {};
 global.Utils = Utils;
 Utils.DeleteProperty = function (object, property) {
@@ -15,6 +17,21 @@ Utils.roomVisible = function (name) {
 Utils.privateServer = function(){
 	return global.RESOURCE_PIXEL === undefined;
 };
+Utils.flagsInRoom = function(roomName){
+	return Game.rooms[roomName].find(FIND_FLAGS);
+};
+Utils.flagsInRoomP = function(roomName,primaryColor){
+	return Game.rooms[roomName].find(FIND_FLAGS,{filter: f => f.color == primaryColor});
+};
+Utils.flagsInRoomS = function(roomName,secondaryColor){
+	return Game.rooms[roomName].find(FIND_FLAGS,{filter: f => f.secondaryColor == secondaryColor});
+};
+Utils.flagsInRoomPS = function(roomName,primaryColor,secondaryColor){
+	return Game.rooms[roomName].find(FIND_FLAGS,{filter: f => f.color == primaryColor && f.secondaryColor == secondaryColor});
+};
+Utils.spawnCreep = function(spawn,body, name, opts={}){
+	return spawn.spawnCreep(body,name,opts);
+}
 
 Creep.prototype.travelToRoom = function (rname) {
 	this.travelTo(new RoomPosition(25, 25, rname));

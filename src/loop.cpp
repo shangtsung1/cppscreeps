@@ -13,7 +13,7 @@ String getExceptionMessage(intptr_t exceptionPtr) {
   return String(reinterpret_cast<Exception *>(exceptionPtr)->what());
 }
 
-void init() {
+void init() {//hello, tis a marker
   INIT();
   if(tick->Memory["rooms"].isUndefined()){
     tick->Memory.set("rooms",val::object());
@@ -30,9 +30,113 @@ void init() {
   printf("Init Routine Called\n");
 }
 
-void mem_gc(){
-    Map<String,JSObject> flags_map = js_object_to_map(tick->Memory["creeps"]);
+void setupFlags(){
+    Map<String,JSObject> rooms_map = js_object_to_map(tick->Game["rooms"]);
+    for(auto const& kv : rooms_map) {
+        String const &roomName = kv.first;
+        JSObject const &room = kv.second;
+        if (!room["controller"].isUndefined()) {
+            JSObject controller = room["controller"].as<JSObject>();
+            if (controller["my"].as<bool>()) {
+                int controllerLevel = controller["level"].as<int>();
+                if (controllerLevel == 0) {
+                    //reserved room
+                } else {
+                    //claimed room, blue flag = base states
+                    JSArray baseStateFlags = Util_flagsInRoomP(roomName, COLOR_BLUE);
+                    int baseStateFlagCount = baseStateFlags["length"].as<int>();
+                    if(baseStateFlagCount > 1){
+                        //too many flags, remove all and redetermine which we need.
+                        Vector<JSObject> arr = js_array_to_vector(baseStateFlags);
+                        for (auto &flag : arr){
+                            flag.call<void>("remove");
+                        }
+                        baseStateFlagCount=0;
+                    }
+                    if(baseStateFlagCount == 0){
+                        //Setup which flag gets placed in this room.
+                        continue;//the flag wont appear till next turn.
+                    }
+                    JSObject baseStateFlag = baseStateFlags[0].as<JSObject>();
+                    int type = baseStateFlag["color"].as<int>();
+                    switch(type){
+                        case COLOR_RED://bootstrap
+                            break;
+                        case COLOR_PURPLE://level 4, can build storage
+                            break;
+                        case COLOR_BLUE://level 6, storage + terminal allowed, controller link
+                            break;
+                        case COLOR_CYAN://level 7, 2 spawns, storage+terminal+all links
+                            break;
+                        case COLOR_GREEN://all things are available
+                            break;
+                    }
+                }
+            } else {
+                if (!controller["reservation"].isUndefined()) {
+                    //reserved by enemy/ally
+                } else if (!controller["owner"].isUndefined()) {
+                    //owned by enemy/ally
+                } else {
+                    //not owned
+                }
+            }
+        }
+        else{
+            //room has no controller.
+            int roomType = room.call<int>("getRoomType");
+            if(roomType == ROOM_CROSSROAD){
+                //power, commodoties, convoys, intershard portals
+            }
+            else if(roomType == ROOM_HIGHWAY){
+                //power, commodoties, convoys
+            }
+            else if(roomType == ROOM_CENTER){
+                //center of habitable cluster(3 nodes, 1 mineral, no hostiles, rnd chance portals), chance of invader base
+            }
+            else if(roomType == ROOM_SOURCE_KEEPER){
+                //source keepers, 3 nodes, 1 mineral, chance of invader base
+            }
+            else{
+                //unpossibru
+            }
+        }
+    }
+}
+
+void flagPostProcessing(String flagName, JSObject flag){
+    //same as preprocessing, but after the rooms done its spawns and creep actions.
+}
+
+void flagPreProcessing(String flagName, JSObject flag){
+    //anything that needs to occur/be_checked for the flag on a tick by tick basis, that isn't covered by a creep role.
+}
+
+void spawnCreeps(String flagName, JSObject flag){
+    //spawn the creeps the flag wants.
+    //check if the flags current creeps the flag has are alive, if not replace the dead ones.
+}
+
+void processCreepActions(String flagName, JSObject flag){
+    //perform the creeps task, if task complete, assign new task from the flag,
+    //or if flag removed, sacrifice creep to spawn
+}
+
+void processFlags(){
+    Map<String,JSObject> flags_map = js_object_to_map(tick->Game["flags"]);
     for(auto const& kv : flags_map) {
+        String const &flagName = kv.first;
+        JSObject const &flag = kv.second;
+        flagPreProcessing(flagName, flag);
+        spawnCreeps(flagName, flag);
+        processCreepActions(flagName, flag);
+        flagPostProcessing(flagName, flag);
+    }
+}
+
+void mem_gc(){
+    Map<String,JSObject> creeps_map = js_object_to_map(tick->Memory["creeps"]);
+    for(auto const& kv : creeps_map) {
         String const &creepName = kv.first;
         if(!Util_creepExists(creepName)){
             Util_deleteProperty(tick->Memory["creeps"],creepName);
@@ -43,6 +147,10 @@ void mem_gc(){
 void loop() {
     INIT();
     mem_gc();
+    setupFlags();
+    processFlags();
+
+
     printf("\nLoop Done\n");
 }
 
