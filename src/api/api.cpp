@@ -41,9 +41,9 @@ JSArray Util_flagsInRoomPS(String roomName, int primaryColor, int secondaryColor
 }
 
 int Util_spawnCreep(JSObject spawn,JSArray body, String name, JSObject opts){
-    return tick->Utils.call<int>("spawnCreep",spawn,body,name,opts);
+    return spawn.call<int>("spawnCreep",spawn,body,name,opts);
 }
 
 int Util_spawnCreep(JSObject spawn,JSArray body, String name){
-    return tick->Utils.call<int>("spawnCreep",spawn,body,name);
+    return spawn.call<int>("spawnCreep",spawn,body,name);
 }

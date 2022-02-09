@@ -29,9 +29,6 @@ Utils.flagsInRoomS = function(roomName,secondaryColor){
 Utils.flagsInRoomPS = function(roomName,primaryColor,secondaryColor){
 	return Game.rooms[roomName].find(FIND_FLAGS,{filter: f => f.color == primaryColor && f.secondaryColor == secondaryColor});
 };
-Utils.spawnCreep = function(spawn,body, name, opts={}){
-	return spawn.spawnCreep(body,name,opts);
-}
 
 Creep.prototype.travelToRoom = function (rname) {
 	this.travelTo(new RoomPosition(25, 25, rname));
