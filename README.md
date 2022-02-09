@@ -3,7 +3,7 @@
 # Get the emsdk repo
 git clone https://github.com/emscripten-core/emsdk.git
 # Enter that directory
-cd emsdk
+cd emsdk<br />
 git pull
 # Download and install the latest SDK tools.
 ./emsdk install latest
