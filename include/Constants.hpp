@@ -1,7 +1,7 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
-#include<string>
-#include<map>
+#include <string>
+#include <map>
 #define SPair std::make_pair<std::string,std::string>
 
 inline std::map<std::string,std::string> makeResourceCollectionRoomsMap(){
@@ -22,6 +22,7 @@ inline std::map<std::string,std::string> resourceCollectionRooms = makeResourceC
 
   #define Map std::map
   #define String std::string
+  #define Exception std::exception
   #define JSObject emscripten::val
   #define JSArray emscripten::val
 

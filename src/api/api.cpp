@@ -2,8 +2,8 @@
 // Created by tsung on 9/02/2022.
 //
 
-#include "api.h"
-#include "../Constants.hpp"
+#include <api.hpp>
+#include <Constants.hpp>
 #include <cppreeps.hpp>
 
 using namespace screeps;

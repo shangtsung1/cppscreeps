@@ -2,7 +2,7 @@
 // Created by tsung on 9/02/2022.
 //
 
-#include "../Constants.hpp"
+#include <Constants.hpp>
 
 #ifndef SCREEPS_API_H
 #define SCREEPS_API_H
@@ -13,6 +13,6 @@ bool Util_roomVisible(String name);
 
 int Util_keyLength(JSObject object);
 
-bool Util_DeleteProperty(JSObject obj, String property);
+bool Util_deleteProperty(JSObject obj, String property);
 
 #endif //SCREEPS_API_H

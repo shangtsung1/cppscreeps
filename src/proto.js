@@ -1,20 +1,20 @@
 var Utils = {};
-global.Utils.DeleteProperty = function (object, property) {
+global.Utils = Utils;
+Utils.DeleteProperty = function (object, property) {
 	return delete object[property];
 };
-global.Utils.keyLength = function (object) {
+Utils.keyLength = function (object) {
 	return Object.keys(object).length;
 };
-global.Utils.creepExists = function (name) {
+Utils.creepExists = function (name) {
 	return Game.creeps[name] != null;
 };
-global.Utils.roomVisible = function (name) {
+Utils.roomVisible = function (name) {
 	return Game.rooms[name] != null;
 };
-
-module.exports.loop = function(){
-	global.Utils = Utils;
-}
+Utils.privateServer = function(){
+	return global.RESOURCE_PIXEL === undefined;
+};
 
 Creep.prototype.travelToRoom = function (rname) {
 	this.travelTo(new RoomPosition(25, 25, rname));

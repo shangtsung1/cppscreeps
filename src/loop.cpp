@@ -3,15 +3,14 @@
 #include <emscripten/bind.h>
 #include <stdio.h>
 
-/// Main Screeps-CPP API
 #include <cppreeps.hpp>
-#include "Constants.hpp"
-#include "./api/api.h"
+#include <Constants.hpp>
+#include <api.hpp>
 
 using namespace screeps;
 
-std::string getExceptionMessage(intptr_t exceptionPtr) {
-  return std::string(reinterpret_cast<std::exception *>(exceptionPtr)->what());
+String getExceptionMessage(intptr_t exceptionPtr) {
+  return String(reinterpret_cast<Exception *>(exceptionPtr)->what());
 }
 
 void init() {

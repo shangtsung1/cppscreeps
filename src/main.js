@@ -9,13 +9,13 @@ const wasm_loader = require('wasm_loader');
 
 // / Module by XXX.js and XXX.wasm files
 var mod = wasm_loader('loop_mod', 'loop');
-mod.then(d => mod = d);
+if(!Utils.privateServer()) {
+	mod.then(d => mod = d);
+}
 
 var runInitialise = false;
 
 module.exports.loop = function () {
-	proto.loop();
-
 	let t = Game.cpu.getUsed();
 	if (mod.loop) {
 		if (!runInitialise) {
@@ -37,7 +37,7 @@ module.exports.loop = function () {
 		console.log('WasmNotLoadedYet');
 	}
 	// give all shards our script is running on access to each others memory.
-	 if(RESOURCE_PIXEL !== undefined) {//make sure we arent on pvt server first.
+	 if(!Utils.privateServer()) {//make sure we arent on pvt server first.
 		 InterShardMemory.setLocal(JSON.stringify(Memory));
 	 }
 	let dt = Game.cpu.getUsed() - t;
