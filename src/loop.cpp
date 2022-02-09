@@ -13,7 +13,8 @@ String getExceptionMessage(intptr_t exceptionPtr) {
   return String(reinterpret_cast<Exception *>(exceptionPtr)->what());
 }
 
-void init() {//hello, tis a marker
+//on wasm load
+void init() {
   INIT();
   if(tick->Memory["rooms"].isUndefined()){
     tick->Memory.set("rooms",val::object());
@@ -144,6 +145,7 @@ void mem_gc(){
     }
 }
 
+//on game loop
 void loop() {
     INIT();
     mem_gc();
@@ -154,6 +156,7 @@ void loop() {
     printf("\nLoop Done\n");
 }
 
+//export to js
 EMSCRIPTEN_BINDINGS(loop) {
     emscripten::function("init", &init);
     emscripten::function("loop", &loop);

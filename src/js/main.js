@@ -1,18 +1,24 @@
 'use strict';
 
-
 var Traveler = require('Traveler');
 var proto = require('proto');
+var mod_file = require('loop_mod');
+var bin_file = require('loop');//or 'loop_optimised'
 
-// load the webassembly module
-const wasm_loader = require('wasm_loader');
+let opts = {};
+opts.wasmBinary = bin_file;
+opts.print = opts.print || ((text) => console.log(`[C]: ${text}`));
+opts.printf = opts.printf || ((text) => console.log(`[C]: ${text}`));
+opts.printErr = opts.printErr || ((text) => console.log(`[C_ERR]: ${text}`));
+opts.onAbort = opts.onAbort || (() => console.log(`[C_ABORT]: WASM Aborted!`));
+opts.noInitialRun = true;
+opts.noExitRuntime = true;
 
-// / Module by XXX.js and XXX.wasm files
-var mod = wasm_loader('loop_mod', 'loop');
+var mod = mod_file(opts);
 if(!Utils.privateServer()) {
+	//cause this makes it work on official server? :S
 	mod.then(d => mod = d);
 }
-
 var runInitialise = false;
 
 module.exports.loop = function () {
@@ -21,13 +27,16 @@ module.exports.loop = function () {
 		if (!runInitialise) {
 			if (mod.init) {
 				runInitialise = true;
-				mod.init();
+				try {
+					mod.init();
+				} catch (exception) {
+					console.error(mod.except(exception));
+				}
 			} else {
 				console.log('Init method missing');
 				return;
 			}
 		}
-
 		try {
 			mod.loop();
 		} catch (exception) {
@@ -41,5 +50,5 @@ module.exports.loop = function () {
 		 InterShardMemory.setLocal(JSON.stringify(Memory));
 	 }
 	let dt = Game.cpu.getUsed() - t;
-	console.log(`Loop = ${dt} CPU`);
+	console.log("Loop = "+dt+" CPU");
 };
