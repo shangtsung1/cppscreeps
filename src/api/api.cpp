@@ -8,6 +8,22 @@
 
 using namespace screeps;
 
+int createFlag(JSObject room,int x,int y,String name,int color,int secondaryColor){
+    return room.call<int>("createFlag",x,y,name,color,secondaryColor);
+}
+
+int createFlag(JSObject room,int x,int y,int color,int secondaryColor){
+    return room.call<int>("createFlag",x,y,null,color,secondaryColor);
+}
+
+int createFlag(JSObject pos,String name,int color,int secondaryColor){
+    return pos.call<int>("createFlag",name,color,secondaryColor);
+}
+
+int createFlag(JSObject pos,int color,int secondaryColor){
+    return pos.call<int>("createFlag",null,color,secondaryColor);
+}
+
 Map<String,JSObject> rooms(){
     return js_object_to_map(tick->Game["rooms"]);
 }

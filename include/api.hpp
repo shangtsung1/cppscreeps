@@ -7,6 +7,11 @@
 #ifndef SCREEPS_API_H
 #define SCREEPS_API_H
 
+int createFlag(JSObject room,int x,int y,String name,int color,int secondaryColor);
+int createFlag(JSObject room,int x,int y,int color,int secondaryColor);
+int createFlag(JSObject pos,String name,int color,int secondaryColor);
+int createFlag(JSObject pos,int color,int secondaryColor);
+
 Map<String,JSObject> rooms();
 Map<String,JSObject> creeps();
 Map<String,JSObject> flags();

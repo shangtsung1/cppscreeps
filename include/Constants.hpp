@@ -26,6 +26,7 @@ inline std::map<std::string,std::string> resourceCollectionRooms = makeResourceC
   #define Exception std::exception
   #define JSObject emscripten::val
   #define JSArray emscripten::val
+  #define null emscripten::val::null()
 
   #define RESOURCE_SCORE "score"
   #define FIND_SCORE_CONTAINERS 10011

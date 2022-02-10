@@ -7,6 +7,12 @@
 #include <Constants.hpp>
 #include <api.hpp>
 
+#include "./basestate/bootstrap.h"
+#include "./basestate/stagestorage.h"
+#include "./basestate/stageterminal.h"
+#include "./basestate/stage7.h"
+#include "./basestate/stage8.h"
+
 using namespace screeps;
 
 String getExceptionMessage(intptr_t exceptionPtr) {
@@ -29,6 +35,27 @@ void init() {
     tick->Memory.set("nameCounter",0);
   }
   printf("Init Routine Called\n");
+}
+
+void determineBaseState(JSObject room,JSObject controller,int controllerLevel){
+    if(controllerLevel < 4 || room["storage"].isUndefined()){
+        createFlag(room,25,25,COLOR_PURPLE,COLOR_RED);
+    }
+    else if(controllerLevel < 6 || room["terminal"].isUndefined()){
+        createFlag(room,25,25,COLOR_PURPLE,COLOR_PURPLE);
+    }
+    else if(controllerLevel < 7){
+        createFlag(room,25,25,COLOR_PURPLE,COLOR_BLUE);
+    }
+    else if(controllerLevel < 8){
+        createFlag(room,25,25,COLOR_PURPLE,COLOR_CYAN);
+    }
+    else if(controllerLevel == 8){
+        createFlag(room,25,25,COLOR_PURPLE,COLOR_GREEN);
+    }
+    else{
+        printf("Fuck.\n");
+    }
 }
 
 void setupFlags(){
@@ -56,20 +83,26 @@ void setupFlags(){
                     }
                     if(baseStateFlagCount == 0){
                         //Setup which flag gets placed in this room.
+                        determineBaseState(room,controller,controllerLevel);
                         continue;//the flag wont appear till next turn.
                     }
                     JSObject baseStateFlag = baseStateFlags[0].as<JSObject>();
                     int type = baseStateFlag["color"].as<int>();
                     switch(type){
                         case COLOR_RED://bootstrap
+                            bootstrap_loop(room);
                             break;
                         case COLOR_PURPLE://level 4, can build storage
+                            stagestorage_loop(room);
                             break;
                         case COLOR_BLUE://level 6, storage + terminal allowed, controller link
+                            stageterminal_loop(room);
                             break;
                         case COLOR_CYAN://level 7, 2 spawns, storage+terminal+all links
+                            stage7_loop(room);
                             break;
                         case COLOR_GREEN://all things are available
+                            stage8_loop(room);
                             break;
                     }
                 }
