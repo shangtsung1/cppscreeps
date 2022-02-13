@@ -37,7 +37,7 @@ void init() {
   printf("Init Routine Called\n");
 }
 
-void determineBaseState(JSObject room,JSObject controller,int controllerLevel){
+void determineBaseState(JSObject room,JSObject controller,number controllerLevel){
     printf("determineBaseState\n");
     if(controllerLevel < 4 || room["storage"].isUndefined()){
         createFlag(room,25,25,COLOR_BLUE,COLOR_RED);
@@ -67,13 +67,13 @@ void setupFlags(){
         if (!room["controller"].isUndefined()) {
             JSObject controller = room["controller"].as<JSObject>();
             if (controller["my"].as<bool>()) {
-                int controllerLevel = controller["level"].as<int>();
+                number controllerLevel = controller["level"].as<number>();
                 if (controllerLevel == 0) {
                     //reserved room
                 } else {
                     //claimed room, blue flag = base states
                     JSArray baseStateFlags = Util_flagsInRoomP(roomName, COLOR_BLUE);
-                    int baseStateFlagCount = baseStateFlags["length"].as<int>();
+                    number baseStateFlagCount = baseStateFlags["length"].as<number>();
                     if(baseStateFlagCount > 1){
                         //too many flags, remove all and redetermine which we need.
                         Vector<JSObject> arr = js_array_to_vector(baseStateFlags);
@@ -119,7 +119,7 @@ void setupFlags(){
         }
         else{
             //room has no controller.
-            int roomType = room.call<int>("getRoomType");
+            number roomType = room.call<number>("getRoomType");
             if(roomType == ROOM_CROSSROAD){
                 //power, commodoties, convoys, intershard portals
             }

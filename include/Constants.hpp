@@ -4,22 +4,11 @@
 #include <map>
 #define SPair std::make_pair<std::string,std::string>
 
-inline std::map<std::string,std::string> makeResourceCollectionRoomsMap(){
-  std::map<std::string,std::string> m;
-  m.insert(SPair("U","W1S15"));
-  m.insert(SPair("H","E1S19"));
-  m.insert(SPair("X","E4S18"));
-
-  return m;
-}
-
-inline std::map<std::string,std::string> resourceCollectionRooms = makeResourceCollectionRoomsMap();
-
-
   #include <emscripten.h>
   #include <emscripten/val.h>
   #include <emscripten/bind.h>
 
+  #define number double
   #define Map std::map
   #define Vector std::vector
   #define String std::string
@@ -28,26 +17,12 @@ inline std::map<std::string,std::string> resourceCollectionRooms = makeResourceC
   #define JSArray emscripten::val
   #define null emscripten::val::null()
 
-  #define RESOURCE_SCORE "score"
-  #define FIND_SCORE_CONTAINERS 10011
-  #define FIND_SCORE_COLLECTORS 10012
-  #define WALLS_RADIUS 5
-  #define SCORE_CONTAINER_SPAWN_CHANCE 0.01
-  #define SCORE_CONTAINER_SPAWN_INTERVAL 500
-  #define SCORE_COLLECTOR_SINK 20
-  #define SCORE_COLLECTOR_MAX_CAPACITY 20000
-
   #define ROOM_CROSSROAD 0
   #define ROOM_HIGHWAY 1
   #define ROOM_CENTER 2
   #define ROOM_SOURCE_KEEPER 3
   #define ROOM_STANDARD 4
 
-  #define BASE_MAIN 0
-  #define BASE_OUTPOST 1
-  #define BASE_RESERVED 2
-  #define BASE_STEPPING_STONE 3
-  #define BASE_SCOUT 4
   #define OK 0
   #define ERR_NOT_OWNER -1
   #define ERR_NO_PATH -2
