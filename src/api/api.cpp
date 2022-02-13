@@ -8,6 +8,7 @@
 
 using namespace screeps;
 
+//TODO: mod createFlag to avoid white flags.
 int createFlag(JSObject room,int x,int y,String name,int color,int secondaryColor){
     return room.call<int>("createFlag",x,y,name,color,secondaryColor);
 }

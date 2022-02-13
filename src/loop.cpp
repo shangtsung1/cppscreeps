@@ -38,20 +38,21 @@ void init() {
 }
 
 void determineBaseState(JSObject room,JSObject controller,int controllerLevel){
+    printf("determineBaseState\n");
     if(controllerLevel < 4 || room["storage"].isUndefined()){
-        createFlag(room,25,25,COLOR_PURPLE,COLOR_RED);
+        createFlag(room,25,25,COLOR_BLUE,COLOR_RED);
     }
     else if(controllerLevel < 6 || room["terminal"].isUndefined()){
-        createFlag(room,25,25,COLOR_PURPLE,COLOR_PURPLE);
+        createFlag(room,25,25,COLOR_BLUE,COLOR_PURPLE);
     }
     else if(controllerLevel < 7){
-        createFlag(room,25,25,COLOR_PURPLE,COLOR_BLUE);
+        createFlag(room,25,25,COLOR_BLUE,COLOR_BLUE);
     }
     else if(controllerLevel < 8){
-        createFlag(room,25,25,COLOR_PURPLE,COLOR_CYAN);
+        createFlag(room,25,25,COLOR_BLUE,COLOR_CYAN);
     }
     else if(controllerLevel == 8){
-        createFlag(room,25,25,COLOR_PURPLE,COLOR_GREEN);
+        createFlag(room,25,25,COLOR_BLUE,COLOR_GREEN);
     }
     else{
         printf("Fuck.\n");
