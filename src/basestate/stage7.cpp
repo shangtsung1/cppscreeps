@@ -8,6 +8,6 @@
 #include <Constants.hpp>
 #include <cppreeps.hpp>
 
-void stage7_loop(JSObject room){
+void stage7_loop(JSObject room,JSObject baseFlag){
 
 }

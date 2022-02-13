@@ -9,6 +9,6 @@
 #include <Constants.hpp>
 #include <cppreeps.hpp>
 
-void stagestorage_loop(JSObject room);
+void stagestorage_loop(JSObject room,JSObject baseFlag);
 
 #endif //SCREEPS_STAGESTORAGE_H

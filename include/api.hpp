@@ -7,6 +7,8 @@
 #ifndef SCREEPS_API_H
 #define SCREEPS_API_H
 
+void println(String s);
+
 number createFlag(JSObject room,number x,number y,String name,number color,number secondaryColor);
 number createFlag(JSObject room,number x,number y,number color,number secondaryColor);
 number createFlag(JSObject pos,String name,number color,number secondaryColor);

@@ -8,6 +8,10 @@
 
 using namespace screeps;
 
+void println(String s){
+    printf("%s\n",s.c_str());
+}
+
 //TODO: mod createFlag to avoid white flags.
 number createFlag(JSObject room,number x,number y,String name,number color,number secondaryColor){
     return room.call<number>("createFlag",x,y,name,color,secondaryColor);

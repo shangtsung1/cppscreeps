@@ -91,19 +91,19 @@ void setupFlags(){
                     int type = baseStateFlag["color"].as<int>();
                     switch(type){
                         case COLOR_RED://bootstrap
-                            bootstrap_loop(room);
+                            bootstrap_loop(room,baseStateFlag);
                             break;
                         case COLOR_PURPLE://level 4, can build storage
-                            stagestorage_loop(room);
+                            stagestorage_loop(room,baseStateFlag);
                             break;
                         case COLOR_BLUE://level 6, storage + terminal allowed, controller link
-                            stageterminal_loop(room);
+                            stageterminal_loop(room,baseStateFlag);
                             break;
                         case COLOR_CYAN://level 7, 2 spawns, storage+terminal+all links
-                            stage7_loop(room);
+                            stage7_loop(room,baseStateFlag);
                             break;
                         case COLOR_GREEN://all things are available
-                            stage8_loop(room);
+                            stage8_loop(room,baseStateFlag);
                             break;
                     }
                 }

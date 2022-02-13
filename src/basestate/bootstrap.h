@@ -9,6 +9,6 @@
 #include <Constants.hpp>
 #include <cppreeps.hpp>
 
-void bootstrap_loop(JSObject room);
+void bootstrap_loop(JSObject room,JSObject baseFlag);
 
 #endif //SCREEPS_BOOTSTRAP_H

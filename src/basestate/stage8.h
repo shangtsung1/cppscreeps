@@ -9,6 +9,6 @@
 #include <Constants.hpp>
 #include <cppreeps.hpp>
 
-void stage8_loop(JSObject room);
+void stage8_loop(JSObject room,JSObject baseFlag);
 
 #endif //SCREEPS_STAGE8_H

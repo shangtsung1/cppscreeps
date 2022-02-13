@@ -9,6 +9,6 @@
 #include <Constants.hpp>
 #include <cppreeps.hpp>
 
-void stageterminal_loop(JSObject room);
+void stageterminal_loop(JSObject room,JSObject baseFlag);
 
 #endif //SCREEPS_STAGETERMINAL_H
