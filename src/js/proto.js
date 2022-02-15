@@ -29,6 +29,19 @@ Utils.flagsInRoomS = function(roomName,secondaryColor){
 Utils.flagsInRoomPS = function(roomName,primaryColor,secondaryColor){
 	return Game.rooms[roomName].find(FIND_FLAGS,{filter: f => f.color == primaryColor && f.secondaryColor == secondaryColor});
 };
+Utils.flagAt = function(roomName,x,y){
+	return (new RoomPosition(x,y,roomName)).lookFor(LOOK_FLAGS).length > 0;
+};
+Utils.flagAtP = function(roomName,x,y,primaryColor){
+	return _.filter((new RoomPosition(x,y,roomName)).lookFor(LOOK_FLAGS),f => f.color == primaryColor).length > 0;
+};
+Utils.flagAtS = function(roomName,x,y,secondaryColor){
+	return _.filter((new RoomPosition(x,y,roomName)).lookFor(LOOK_FLAGS),f => f.secondaryColor == secondaryColor).length > 0;
+};
+Utils.flagAtPS = function(roomName,x,y,primaryColor,secondaryColor){
+	return _.filter((new RoomPosition(x,y,roomName)).lookFor(LOOK_FLAGS),f => f.color == primaryColor && f.secondaryColor == secondaryColor).length > 0;
+};
+
 
 Creep.prototype.travelToRoom = function (rname) {
 	this.travelTo(new RoomPosition(25, 25, rname));

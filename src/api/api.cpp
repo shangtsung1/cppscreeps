@@ -53,6 +53,24 @@ Map<String,JSObject> constructionSites(){
     return js_object_to_map(tick->Game["constructionSites"]);
 }
 
+JSArray sources(String roomName){
+    if(tick->Game["rooms"][roomName].isUndefined()){
+        return emscripten::val::array();
+    }
+    return tick->Game["rooms"][roomName].call<JSArray>("find",FIND_SOURCES);
+}
+
+JSObject mineral(String roomName){
+    if(tick->Game["rooms"][roomName].isUndefined()){
+        return null;
+    }
+    JSArray mins = tick->Game["rooms"][roomName].call<JSArray>("find",FIND_MINERALS);
+    if(mins["length"].as<number>() == 0){
+        return null;
+    }
+    return mins[0].as<JSObject>();
+}
+
 bool Util_creepExists(String name){
     return tick->Utils.call<bool>("creepExists",name);
 }
@@ -83,6 +101,22 @@ JSArray Util_flagsInRoomS(String roomName, number secondaryColor){
 
 JSArray Util_flagsInRoomPS(String roomName, number primaryColor, number secondaryColor){
     return tick->Utils.call<JSArray>("flagsInRoomPS",roomName,primaryColor,secondaryColor);
+}
+
+bool Util_flagAt(String roomName,number x, number y){
+    return tick->Utils.call<bool>("flagAt",roomName,x,y);
+}
+
+bool Util_flagAtP(String roomName,number x, number y, number primaryColor){
+    return tick->Utils.call<bool>("flagAtP",roomName,x,y,primaryColor);
+}
+
+bool Util_flagAtS(String roomName,number x, number y, number secondaryColor){
+    return tick->Utils.call<bool>("flagAtS",roomName,x,y,secondaryColor);
+}
+
+bool Util_flagAtPS(String roomName,number x, number y, number primaryColor, number secondaryColor){
+    return tick->Utils.call<bool>("flagAtPS",roomName,x,y,primaryColor,secondaryColor);
 }
 
 number Util_spawnCreep(JSObject spawn,JSArray body, String name, JSObject opts){

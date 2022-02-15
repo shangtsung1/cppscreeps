@@ -19,6 +19,12 @@ if(!Utils.privateServer()) {
 	//cause this makes it work on official server? :S
 	mod.then(d => mod = d);
 }
+
+Utils.roomMemCopy = function(roomName,pointer){
+	var heapView = new Uint8Array(mod.HEAPU8.buffer, pointer);
+	Game.map.getRoomTerrain(roomName).getRawBuffer(heapView);
+}
+
 var runInitialise = false;
 
 module.exports.loop = function () {

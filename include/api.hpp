@@ -14,13 +14,19 @@ number createFlag(JSObject room,number x,number y,number color,number secondaryC
 number createFlag(JSObject pos,String name,number color,number secondaryColor);
 number createFlag(JSObject pos,number color,number secondaryColor);
 
+bool Util_flagAt(String roomName,number x, number y);
+bool Util_flagAtP(String roomName,number x, number y, number primaryColor);
+bool Util_flagAtS(String roomName,number x, number y, number secondaryColor);
+bool Util_flagAtPS(String roomName,number x, number y, number primaryColor, number secondaryColor);
+
 Map<String,JSObject> rooms();
 Map<String,JSObject> creeps();
 Map<String,JSObject> flags();
 Map<String,JSObject> spawns();
 Map<String,JSObject> structures();
 Map<String,JSObject> constructionSites();
-
+JSArray sources(String roomName);
+JSObject mineral(String roomName);
 
 bool Util_creepExists(String name);
 
