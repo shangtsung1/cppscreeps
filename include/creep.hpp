@@ -18,7 +18,6 @@ struct CreepDefinition{
         number maxSize;
         number priority;//0-5
         String currentCreep;
-        String containerId;
 };
 
 #endif //SCREEPS_CREEP_H

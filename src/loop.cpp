@@ -169,15 +169,22 @@ void spawnCreeps(String flagName, JSObject flag) {
                 if(LENGTH(spawnCapableSpawns) == 0){
                     return;
                 }
-                struct CreepDefinition def = spawnDefs[i].as<CreepDefinition>();
-                if (def.priority == priority) {
+                if (spawnDefs[i]["priority"].as<number>() == priority) {
                     if (spawnDefs[i]["currentCreep"].isNull() ||
                         tick->Game["creeps"][spawnDefs[i]["currentCreep"].as<String>()].isUndefined()) {
                         //creep is dead or not alive.
-                        printf("Need %s", def.bodyType.c_str());
                         //spawn creep
                         JSObject spawn = spawnCapableSpawns[0];
-                        Util_spawnCreep(spawn,BodyBuilder_getBody(room,def), getNewCreepName(), val::object());
+                        String name = getNewCreepName();
+                        JSObject anObj = val::object();
+                        JSObject memObj = val::object();
+                        anObj.set("memory",memObj);
+                        memObj.set("bodyType",spawnDefs[i]["bodyType"].as<String>());
+                        memObj.set("flagName",NAME(flag));
+                        number result = Util_spawnCreep(spawn,BodyBuilder_getBody(room,spawnDefs[i].as<CreepDefinition>()), name, anObj);
+                        if(result == OK){
+                            flag["memory"]["spawnDefs"][i].set("currentCreep",name);
+                        }
                         //set this spawn no longer capable of spawning
                         spawnCapableSpawns.call<void>("shift");
                     }
@@ -191,8 +198,16 @@ void spawnCreeps(String flagName, JSObject flag) {
 }
 
 void processCreepActions(String flagName, JSObject flag){
-    //perform the creeps task, if task complete, assign new task from the flag,
-    //or if flag removed, sacrifice creep to spawn
+    int ii = 0;
+    JSArray spawnDefs = flag["memory"]["spawnDefs"].as<JSArray>();
+    JS_FOREACH(spawnDefs, ii)
+    {
+        JSObject creep = tick->Game["creeps"][spawnDefs[ii]["currentCreep"]].as<JSObject>();
+        if(!creep.isUndefined() && !creep.isNull()){
+            printf("%s\n",creep["name"].as<String>().c_str());
+            //creep["memory"]["bodyType"]
+        }
+    }
 }
 
 void processFlags(){
@@ -208,6 +223,7 @@ void processFlags(){
 }
 
 void mem_gc(){
+    //TODO: fix
     Map<String,JSObject> creeps_map = creeps();
     for(auto const& kv : creeps_map) {
         String const &creepName = kv.first;
@@ -266,6 +282,5 @@ EMSCRIPTEN_BINDINGS(loop) {
         .field("maxSize", &CreepDefinition::maxSize)
         .field("priority", &CreepDefinition::priority)
         .field("currentCreep", &CreepDefinition::currentCreep)
-        .field("containerId", &CreepDefinition::containerId)
         ;
 }

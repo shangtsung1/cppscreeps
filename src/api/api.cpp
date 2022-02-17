@@ -181,6 +181,5 @@ number Util_spawnCreep(JSObject spawn,JSArray body, String name, JSObject opts){
         opts.set("memory",val::object());
     }
     opts["memory"].as<JSObject>().set("roomSpawnedIn",spawn["room"]["name"].as<String>());
-    //return spawn.call<number>("spawnCreep",spawn,body,name,opts);
-    return 0;
+    return spawn.call<number>("spawnCreep",body,name,opts);
 }

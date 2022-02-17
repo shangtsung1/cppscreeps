@@ -24,6 +24,9 @@ void source_mine_setFlags(JSObject room){
 
 void source_mine_setupMemory(JSObject room,JSObject flag){
     JSObject flagMem = flag["memory"].as<JSObject>();
+    if(flagMem["containerId"].isUndefined()){
+        flagMem.set("containerId","");
+    }
     //set up spawn decs.
     if(LENGTH(flagMem["spawnDefs"].as<JSArray>()) == 0){
         CreepDefinition def;

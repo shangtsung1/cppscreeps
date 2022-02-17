@@ -72,7 +72,7 @@ static inline String getNewCreepName(){
     //increment counter;
     number counter = tick->Memory["nameCounter"].as<number>();
     tick->Memory.set("nameCounter",counter+1);
-    return "C-"+TO_STRING(counter)+"-"+(tick->Game["shard"]["name"].as<String>());
+    return "C-"+TO_STRING((int)counter)+"-"+(tick->Game["shard"]["name"].as<String>());
 }
 
 
