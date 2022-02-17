@@ -6,12 +6,16 @@
 #include <cppreeps.hpp>
 #include <Constants.hpp>
 #include <api.hpp>
+#include <terrain_utils.hpp>
+#include <creep.hpp>
 
 #include "./basestate/bootstrap.h"
 #include "./basestate/stagestorage.h"
 #include "./basestate/stageterminal.h"
 #include "./basestate/stage7.h"
 #include "./basestate/stage8.h"
+
+#include "./creep/bodybuilder.h"
 
 using namespace screeps;
 
@@ -27,6 +31,9 @@ void init() {
   }
   if(tick->Memory["creeps"].isUndefined()){
     tick->Memory.set("creeps",val::object());
+  }
+  if(tick->Memory["flags"].isUndefined()){
+      tick->Memory.set("flags",val::object());
   }
   if(tick->Memory["war"].isUndefined()){
     tick->Memory.set("war",val::object());
@@ -88,7 +95,8 @@ void setupFlags(){
                         continue;//the flag wont appear till next turn.
                     }
                     JSObject baseStateFlag = baseStateFlags[0].as<JSObject>();
-                    int type = baseStateFlag["color"].as<int>();
+                    int type = baseStateFlag["secondaryColor"].as<int>();
+
                     switch(type){
                         case COLOR_RED://bootstrap
                             bootstrap_loop(room,baseStateFlag);
@@ -147,9 +155,39 @@ void flagPreProcessing(String flagName, JSObject flag){
     //anything that needs to occur/be_checked for the flag on a tick by tick basis, that isn't covered by a creep role.
 }
 
-void spawnCreeps(String flagName, JSObject flag){
-    //spawn the creeps the flag wants.
-    //check if the flags current creeps the flag has are alive, if not replace the dead ones.
+void spawnCreeps(String flagName, JSObject flag) {
+    int i = 0;
+    //is the flag in a claimed room?
+    if (!flag["room"].isNull() && !flag["room"]["controller"].isNull() && flag["room"]["controller"]["level"].as<number>() > 0){
+        JSObject room = flag["room"].as<JSObject>();
+        JSArray spawnCapableSpawns = spawnsNotSpawning(NAME(room));
+
+        JSArray spawnDefs = flag["memory"]["spawnDefs"].as<JSArray>();
+        for (int priority = 0; priority < 5; priority++) {
+            JS_FOREACH(spawnDefs, i)
+            {
+                if(LENGTH(spawnCapableSpawns) == 0){
+                    return;
+                }
+                struct CreepDefinition def = spawnDefs[i].as<CreepDefinition>();
+                if (def.priority == priority) {
+                    if (spawnDefs[i]["currentCreep"].isNull() ||
+                        tick->Game["creeps"][spawnDefs[i]["currentCreep"].as<String>()].isUndefined()) {
+                        //creep is dead or not alive.
+                        printf("Need %s", def.bodyType.c_str());
+                        //spawn creep
+                        JSObject spawn = spawnCapableSpawns[0];
+                        Util_spawnCreep(spawn,BodyBuilder_getBody(room,def), getNewCreepName(), val::object());
+                        //set this spawn no longer capable of spawning
+                        spawnCapableSpawns.call<void>("shift");
+                    }
+                }
+            }
+        }
+    }
+    else{
+        //TODO: spawn for flags outside the base room.
+    }
 }
 
 void processCreepActions(String flagName, JSObject flag){
@@ -177,11 +215,38 @@ void mem_gc(){
             Util_deleteProperty(tick->Memory["creeps"],creepName);
         }
     }
+    Map<String,JSObject> flag_map = flags();
+    for(auto const& kv : flag_map) {
+        String const &flagName = kv.first;
+        if(!Util_flagExists(flagName)){
+            Util_deleteProperty(tick->Memory["flags"],flagName);
+        }
+    }
+}
+
+void mem_flag(){
+    Map<String,JSObject> flag_map = flags();
+    for(auto const& kv : flag_map) {
+        String const &flagName = kv.first;
+        JSObject const &flag = kv.second;
+        if (flag["memory"].isNull()) {
+            JSObject flagsM = tick->Memory["flags"].as<JSObject>();
+            if (flagsM[flagName].isNull()) {
+                flagsM.set(flagName, val::object());
+            }
+            //reset the flag.memory object.
+            flag.as<JSObject>().set("memory",tick->Memory["flags"][flagName].as<JSObject>());
+        }
+        if (flag["memory"]["spawnDefs"].isUndefined()) {
+            flag["memory"].set("spawnDefs",val::array());
+        }
+    }
 }
 
 //on game loop
 void loop() {
     INIT();
+    mem_flag();
     mem_gc();
     setupFlags();
     processFlags();
@@ -195,4 +260,12 @@ EMSCRIPTEN_BINDINGS(loop) {
     emscripten::function("init", &init);
     emscripten::function("loop", &loop);
     emscripten::function("except", &getExceptionMessage);
+    emscripten::value_object<CreepDefinition>("CreepDefinition")
+        .field("bodyType", &CreepDefinition::bodyType)
+        .field("offRoad", &CreepDefinition::offRoad)
+        .field("maxSize", &CreepDefinition::maxSize)
+        .field("priority", &CreepDefinition::priority)
+        .field("currentCreep", &CreepDefinition::currentCreep)
+        .field("containerId", &CreepDefinition::containerId)
+        ;
 }

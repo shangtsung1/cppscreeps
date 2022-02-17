@@ -12,8 +12,7 @@ using namespace screeps;
 unsigned char* buffer = (unsigned char*)malloc(2500);
 
 void TerrainUtils_setRoom(String roomName){
-    //ask js nicely to fill the buffer at the pointer above.
-    tick->Utils.call<void>("roomMemCopy",roomName,buffer);
+    tick->Utils.call<void>("roomMemCopy",roomName,*buffer);
 }
 
 unsigned char TerrainUtils_get(number x, number y){

@@ -13,20 +13,20 @@ void println(String s){
 }
 
 //TODO: mod createFlag to avoid white flags.
-number createFlag(JSObject room,number x,number y,String name,number color,number secondaryColor){
-    return room.call<number>("createFlag",x,y,name,color,secondaryColor);
+JSObject createFlag(JSObject room,number x,number y,String name,number color,number secondaryColor){
+    return room.call<JSObject>("createFlag",x,y,name,color,secondaryColor);
 }
 
-number createFlag(JSObject room,number x,number y,number color,number secondaryColor){
-    return room.call<number>("createFlag",x,y,null,color,secondaryColor);
+JSObject createFlag(JSObject room,number x,number y,number color,number secondaryColor){
+    return room.call<JSObject>("createFlag",x,y,null,color,secondaryColor);
 }
 
-number createFlag(JSObject pos,String name,number color,number secondaryColor){
-    return pos.call<number>("createFlag",name,color,secondaryColor);
+JSObject createFlag(JSObject pos,String name,number color,number secondaryColor){
+    return pos.call<JSObject>("createFlag",name,color,secondaryColor);
 }
 
-number createFlag(JSObject pos,number color,number secondaryColor){
-    return pos.call<number>("createFlag",null,color,secondaryColor);
+JSObject createFlag(JSObject pos,number color,number secondaryColor){
+    return pos.call<JSObject>("createFlag",null,color,secondaryColor);
 }
 
 Map<String,JSObject> rooms(){
@@ -43,6 +43,10 @@ Map<String,JSObject> flags(){
 
 Map<String,JSObject> spawns(){
     return js_object_to_map(tick->Game["spawns"]);
+}
+
+JSArray spawnsNotSpawning(String roomName){
+    return tick->Utils.call<JSArray>("spawnsNotSpawning",roomName);
 }
 
 Map<String,JSObject> structures(){
@@ -73,6 +77,10 @@ JSObject mineral(String roomName){
 
 bool Util_creepExists(String name){
     return tick->Utils.call<bool>("creepExists",name);
+}
+
+bool Util_flagExists(String name){
+    return tick->Utils.call<bool>("flagExists",name);
 }
 
 bool Util_roomVisible(String name){
@@ -119,10 +127,60 @@ bool Util_flagAtPS(String roomName,number x, number y, number primaryColor, numb
     return tick->Utils.call<bool>("flagAtPS",roomName,x,y,primaryColor,secondaryColor);
 }
 
-number Util_spawnCreep(JSObject spawn,JSArray body, String name, JSObject opts){
-    return spawn.call<number>("spawnCreep",spawn,body,name,opts);
+bool Util_flagAt(JSObject roomPos){
+    return tick->Utils.call<bool>("flagAtRP",roomPos);
 }
 
-number Util_spawnCreep(JSObject spawn,JSArray body, String name){
-    return spawn.call<number>("spawnCreep",spawn,body,name);
+bool Util_flagAtP(JSObject roomPos, number primaryColor){
+    return tick->Utils.call<bool>("flagAtRPP",roomPos,primaryColor);
+}
+
+bool Util_flagAtS(JSObject roomPos, number secondaryColor){
+    return tick->Utils.call<bool>("flagAtRPS",roomPos,secondaryColor);
+}
+
+bool Util_flagAtPS(JSObject roomPos, number primaryColor, number secondaryColor){
+    return tick->Utils.call<bool>("flagAtRPPS",roomPos,primaryColor,secondaryColor);
+}
+
+JSObject Util_getFirstFlagAt(String roomName,number x, number y){
+    return tick->Utils.call<JSObject>("getFirstFlagAt",roomName,x,y);
+}
+
+JSObject Util_getFirstFlagAtP(String roomName,number x, number y, number primaryColor){
+    return tick->Utils.call<JSObject>("getFirstFlagAtP",roomName,x,y,primaryColor);
+}
+
+JSObject Util_getFirstFlagAtS(String roomName,number x, number y, number secondaryColor){
+    return tick->Utils.call<JSObject>("getFirstFlagAtS",roomName,x,y,secondaryColor);
+}
+
+JSObject Util_getFirstFlagAtPS(String roomName,number x, number y, number primaryColor, number secondaryColor){
+    return tick->Utils.call<JSObject>("getFirstFlagAtPS",roomName,x,y,primaryColor,secondaryColor);
+}
+
+JSArray Util_getFlagsAt(String roomName,number x, number y){
+    return tick->Utils.call<JSArray>("getFlagsAt",roomName,x,y);
+}
+
+JSArray Util_getFlagsAtP(String roomName,number x, number y, number primaryColor){
+    return tick->Utils.call<JSArray>("getFlagsAtP",roomName,x,y,primaryColor);
+}
+
+JSArray Util_getFlagsAtS(String roomName,number x, number y, number secondaryColor){
+    return tick->Utils.call<JSArray>("getFlagsAtS",roomName,x,y,secondaryColor);
+}
+
+JSArray Util_getFlagsAtPS(String roomName,number x, number y, number primaryColor, number secondaryColor){
+    return tick->Utils.call<JSArray>("getFlagsAtPS",roomName,x,y,primaryColor,secondaryColor);
+}
+
+number Util_spawnCreep(JSObject spawn,JSArray body, String name, JSObject opts){
+    tick->Utils.call<void>("setSpawning",spawn);
+    if(opts["memory"].isUndefined()){
+        opts.set("memory",val::object());
+    }
+    opts["memory"].as<JSObject>().set("roomSpawnedIn",spawn["room"]["name"].as<String>());
+    //return spawn.call<number>("spawnCreep",spawn,body,name,opts);
+    return 0;
 }

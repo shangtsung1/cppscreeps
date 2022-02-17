@@ -11,6 +11,9 @@ Utils.keyLength = function (object) {
 Utils.creepExists = function (name) {
 	return Game.creeps[name] != null;
 };
+Utils.flagExists = function (name) {
+	return Game.flags[name] != null;
+};
 Utils.roomVisible = function (name) {
 	return Game.rooms[name] != null;
 };
@@ -41,6 +44,48 @@ Utils.flagAtS = function(roomName,x,y,secondaryColor){
 Utils.flagAtPS = function(roomName,x,y,primaryColor,secondaryColor){
 	return _.filter((new RoomPosition(x,y,roomName)).lookFor(LOOK_FLAGS),f => f.color == primaryColor && f.secondaryColor == secondaryColor).length > 0;
 };
+Utils.flagAtRP = function(pos){
+	return pos.lookFor(LOOK_FLAGS).length > 0;
+};
+Utils.flagAtRPP = function(pos,primaryColor){
+	return _.filter(pos.lookFor(LOOK_FLAGS),f => f.color == primaryColor).length > 0;
+};
+Utils.flagAtRPS = function(pos,secondaryColor){
+	return _.filter(pos.lookFor(LOOK_FLAGS),f => f.secondaryColor == secondaryColor).length > 0;
+};
+Utils.flagAtRPPS = function(pos,primaryColor,secondaryColor){
+	return _.filter(pos.lookFor(LOOK_FLAGS),f => f.color == primaryColor && f.secondaryColor == secondaryColor).length > 0;
+};
+Utils.getFlagsAt = function(roomName,x,y){
+	return (new RoomPosition(x,y,roomName)).lookFor(LOOK_FLAGS);
+};
+Utils.getFlagsAtP = function(roomName,x,y,primaryColor){
+	return _.filter((new RoomPosition(x,y,roomName)).lookFor(LOOK_FLAGS),f => f.color == primaryColor);
+};
+Utils.getFlagsAtS = function(roomName,x,y,secondaryColor){
+	return _.filter((new RoomPosition(x,y,roomName)).lookFor(LOOK_FLAGS),f => f.secondaryColor == secondaryColor);
+};
+Utils.getFlagsAtPS = function(roomName,x,y,primaryColor,secondaryColor){
+	return _.filter((new RoomPosition(x,y,roomName)).lookFor(LOOK_FLAGS),f => f.color == primaryColor && f.secondaryColor == secondaryColor);
+};
+Utils.getFirstFlagAt = function(roomName,x,y){
+	return (new RoomPosition(x,y,roomName)).lookFor(LOOK_FLAGS)[0];
+};
+Utils.getFirstFlagAtP = function(roomName,x,y,primaryColor){
+	return _.filter((new RoomPosition(x,y,roomName)).lookFor(LOOK_FLAGS),f => f.color == primaryColor)[0];
+};
+Utils.getFirstFlagAtS = function(roomName,x,y,secondaryColor){
+	return _.filter((new RoomPosition(x,y,roomName)).lookFor(LOOK_FLAGS),f => f.secondaryColor == secondaryColor)[0];
+};
+Utils.getFirstFlagAtPS = function(roomName,x,y,primaryColor,secondaryColor){
+	return _.filter((new RoomPosition(x,y,roomName)).lookFor(LOOK_FLAGS),f => f.color == primaryColor && f.secondaryColor == secondaryColor)[0];
+};
+Utils.spawnsNotSpawning = function(roomName){
+	return Game.rooms[roomName].find(FIND_MY_STRUCTURES,{filter: f=> f.structureType == STRUCTURE_SPAWN && f.spawning !== undefined && !f.spawned});
+}
+Utils.setSpawning = function(spawn){
+	spawn.spawned = true;
+}
 
 
 Creep.prototype.travelToRoom = function (rname) {

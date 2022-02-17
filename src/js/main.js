@@ -21,7 +21,7 @@ if(!Utils.privateServer()) {
 }
 
 Utils.roomMemCopy = function(roomName,pointer){
-	var heapView = new Uint8Array(mod.HEAPU8.buffer, pointer);
+	var heapView = new Uint8Array(mod.HEAPU8, pointer);
 	Game.map.getRoomTerrain(roomName).getRawBuffer(heapView);
 }
 
@@ -39,7 +39,7 @@ module.exports.loop = function () {
 					console.error(mod.except(exception));
 				}
 			} else {
-				console.log('Init method missing');
+				console.log('[J]: Init method missing');
 				return;
 			}
 		}
@@ -49,12 +49,12 @@ module.exports.loop = function () {
 			console.error(mod.except(exception));
 		}
 	} else {
-		console.log('WasmNotLoadedYet');
+		console.log('[J]: WasmNotLoadedYet');
 	}
 	// give all shards our script is running on access to each others memory.
 	 if(!Utils.privateServer()) {//make sure we arent on pvt server first.
 		 InterShardMemory.setLocal(JSON.stringify(Memory));
 	 }
 	let dt = Game.cpu.getUsed() - t;
-	console.log("Loop = "+dt+" CPU");
+	console.log("[J]: Loop = "+dt+" CPU");
 };

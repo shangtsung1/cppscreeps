@@ -13,9 +13,11 @@
   #define Vector std::vector
   #define String std::string
   #define Exception std::exception
+  #define TO_STRING std::to_string
   #define JSObject emscripten::val
   #define JSArray emscripten::val
   #define null emscripten::val::null()
+
 
   #define ROOM_CROSSROAD 0
   #define ROOM_HIGHWAY 1

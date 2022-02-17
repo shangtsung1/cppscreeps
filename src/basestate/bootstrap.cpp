@@ -8,6 +8,9 @@
 #include <Constants.hpp>
 #include <cppreeps.hpp>
 #include "stagestorage.h"
+#include "../flags/source_mine.h"
+#include "../flags/mineral_mine.h"
+#include "../flags/controller_upgrade.h"
 
 void bootstrap_loop(JSObject room,JSObject baseFlag){
     if(!room["storage"].isUndefined()){
@@ -17,4 +20,7 @@ void bootstrap_loop(JSObject room,JSObject baseFlag){
         stagestorage_loop(room,baseFlag);
         return;
     }
+    source_mine_doRoutine(room);
+    mineral_mine_doRoutine(room);
+    controller_upgrade_doRoutine(room);
 }
