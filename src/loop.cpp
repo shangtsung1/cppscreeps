@@ -35,6 +35,9 @@ void init() {
   if(tick->Memory["flags"].isUndefined()){
       tick->Memory.set("flags",val::object());
   }
+  if(tick->Memory["spawns"].isUndefined()){
+      tick->Memory.set("spawns",val::object());
+  }
   if(tick->Memory["war"].isUndefined()){
     tick->Memory.set("war",val::object());
   }
@@ -197,6 +200,10 @@ void spawnCreeps(String flagName, JSObject flag) {
     }
 }
 
+
+#include "./flags/source_mine.h"
+#include "./flags/mineral_mine.h"
+#include "./flags/controller_upgrade.h"
 void processCreepActions(String flagName, JSObject flag){
     int ii = 0;
     JSArray spawnDefs = flag["memory"]["spawnDefs"].as<JSArray>();
@@ -205,7 +212,13 @@ void processCreepActions(String flagName, JSObject flag){
         JSObject creep = tick->Game["creeps"][spawnDefs[ii]["currentCreep"]].as<JSObject>();
         if(!creep.isUndefined() && !creep.isNull()){
             printf("%s\n",creep["name"].as<String>().c_str());
-            //creep["memory"]["bodyType"]
+            if(!creep["memory"]["bodyType"].isUndefined()){
+                String bodyType = creep["memory"]["bodyType"].as<String>();
+                #include "./creep/creep_actions.cpp"
+            }
+            else{
+                //TODO: must have popped in from another shard.
+            }
         }
     }
 }
@@ -223,19 +236,25 @@ void processFlags(){
 }
 
 void mem_gc(){
-    //TODO: fix
-    Map<String,JSObject> creeps_map = creeps();
+    Map<String,JSObject> creeps_map = creepsMem();
     for(auto const& kv : creeps_map) {
         String const &creepName = kv.first;
-        if(!Util_creepExists(creepName)){
-            Util_deleteProperty(tick->Memory["creeps"],creepName);
+        if(tick->Game["creeps"][creepName].isUndefined() || tick->Game["creeps"][creepName].isNull()){
+            tick->Memory["creeps"].delete_(creepName);
         }
     }
-    Map<String,JSObject> flag_map = flags();
+    Map<String,JSObject> flag_map = flagsMem();
     for(auto const& kv : flag_map) {
         String const &flagName = kv.first;
-        if(!Util_flagExists(flagName)){
-            Util_deleteProperty(tick->Memory["flags"],flagName);
+        if(tick->Game["flags"][flagName].isUndefined() || tick->Game["flags"][flagName].isNull()){
+            tick->Memory["flags"].delete_(flagName);
+        }
+    }
+    Map<String,JSObject> spawn_map = spawnsMem();
+    for(auto const& kv : spawn_map) {
+        String const &spawnName = kv.first;
+        if(tick->Game["spawns"][spawnName].isUndefined() || tick->Game["spawns"][spawnName].isNull()){
+            tick->Memory["spawns"].delete_(spawnName);
         }
     }
 }

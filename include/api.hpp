@@ -49,6 +49,10 @@ JSArray Util_getFlagsAtPS(String roomName,number x, number y, number primaryColo
 Map<String,JSObject> rooms();
 Map<String,JSObject> creeps();
 Map<String,JSObject> flags();
+Map<String,JSObject> roomsMem();
+Map<String,JSObject> creepsMem();
+Map<String,JSObject> flagsMem();
+Map<String,JSObject> spawnsMem();
 Map<String,JSObject> spawns();
 JSArray spawnsNotSpawning(String roomName);
 Map<String,JSObject> structures();

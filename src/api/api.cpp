@@ -41,6 +41,22 @@ Map<String,JSObject> flags(){
     return js_object_to_map(tick->Game["flags"]);
 }
 
+Map<String,JSObject> roomsMem(){
+    return js_object_to_map(tick->Memory["rooms"]);
+}
+
+Map<String,JSObject> creepsMem(){
+    return js_object_to_map(tick->Memory["creeps"]);
+}
+
+Map<String,JSObject> flagsMem(){
+    return js_object_to_map(tick->Memory["flags"]);
+}
+
+Map<String,JSObject> spawnsMem(){
+    return js_object_to_map(tick->Memory["spawns"]);
+}
+
 Map<String,JSObject> spawns(){
     return js_object_to_map(tick->Game["spawns"]);
 }

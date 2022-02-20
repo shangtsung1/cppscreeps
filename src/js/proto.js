@@ -87,6 +87,53 @@ Utils.setSpawning = function(spawn){
 	spawn.spawned = true;
 }
 
+Flag.prototype.getSource = function(){
+	return this.pos.lookFor(LOOK_SOURCES)[0];
+}
+
+Flag.prototype.getSources = function(){
+	return this.pos.lookFor(LOOK_SOURCES);
+}
+
+Flag.prototype.getMineral = function(){
+	return this.pos.lookFor(LOOK_MINERALS)[0];
+}
+
+Flag.prototype.getMinerals = function(){
+	return this.pos.lookFor(LOOK_MINERALS);
+}
+
+Flag.prototype.getConstructionSites= function(){
+	return this.pos.lookFor(LOOK_CONSTRUCTION_SITES);
+}
+
+Flag.prototype.getTombstones = function(){
+	return this.pos.lookFor(LOOK_TOMBSTONES);
+}
+
+Flag.prototype.getNukes = function(){
+	return this.pos.lookFor(LOOK_NUKES);
+}
+
+Flag.prototype.getStructures= function(){
+	return this.pos.lookFor(LOOK_STRUCTURES);
+}
+
+Flag.prototype.getPowerCreeps = function(){
+	return this.pos.lookFor(LOOK_POWER_CREEPS);
+}
+
+Flag.prototype.getResources= function(){
+	return this.pos.lookFor(LOOK_RESOURCES);
+}
+
+Flag.prototype.getRuins= function(){
+	return this.pos.lookFor(LOOK_RUINS);
+}
+
+Flag.prototype.getCreeps= function(){
+	return this.pos.lookFor(LOOK_CREEPS);
+}
 
 Creep.prototype.travelToRoom = function (rname) {
 	this.travelTo(new RoomPosition(25, 25, rname));

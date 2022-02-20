@@ -12,4 +12,7 @@
 void source_mine_doRoutine(JSObject room);
 //void source_mine_setFlags(JSObject room);
 
+void source_mine_workerTask(JSObject flag,JSObject creep);
+void source_mine_haulerTask(JSObject flag,JSObject creep);
+
 #endif //SCREEPS_SOURCE_MINE_H
