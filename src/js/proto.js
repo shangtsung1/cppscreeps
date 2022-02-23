@@ -2,6 +2,15 @@
 
 var Utils = {};
 global.Utils = Utils;
+
+Utils.newPos = function(x,y,roomName) {
+	return new RoomPosition(x,y,roomName);
+};
+Utils.getRoom = function(roomName) {
+	var heapView = new Uint8Array(new ArrayBuffer(2500));
+	(new Room.Terrain(roomName)).getRawBuffer(heapView);
+	return heapView;
+};
 Utils.DeleteProperty = function (object, property) {
 	return delete object[property];
 };
@@ -85,6 +94,14 @@ Utils.spawnsNotSpawning = function(roomName){
 }
 Utils.setSpawning = function(spawn){
 	spawn.spawned = true;
+}
+
+RoomPosition.prototype.getPathRangeTo = function(x2,y2,rName,opts={}){
+	if(this.roomName !== rName){
+		//we need to do multi room calcs.
+		return 99999999;
+	}
+	return this.findPathTo(x2,y2,opts).length;
 }
 
 Flag.prototype.getSource = function(){

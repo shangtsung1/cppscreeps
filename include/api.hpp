@@ -17,6 +17,10 @@ inline static String ID(JSObject obj){return obj["id"].as<String>();}
 inline static JSObject POS(JSObject obj){return obj["pos"].as<JSObject>();}
 inline static number LENGTH(JSArray arr){return arr["length"].as<number>();}
 
+
+
+static inline JSObject NEWPOS(number x, number y, String roomName){ return tick->Utils.call<JSObject>("newPos",x,y,roomName);}
+
 #define JS_FOREACH(jsArray,iterator) \
      int _arrLen = jsArray["length"].as<int>();  \
      for (iterator = 0; iterator < _arrLen; iterator++)

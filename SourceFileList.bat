@@ -9,6 +9,8 @@ SET SRC_FILES=%SRC_FILES% src\basestate\stage8.cpp
 SET SRC_FILES=%SRC_FILES% src\basestate\stagestorage.cpp
 SET SRC_FILES=%SRC_FILES% src\basestate\stageterminal.cpp
 
+SET SRC_FILES=%SRC_FILES% src\building\building.cpp
+
 SET SRC_FILES=%SRC_FILES% src\creep\creep.cpp
 SET SRC_FILES=%SRC_FILES% src\creep\bodybuilder.cpp
 

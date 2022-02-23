@@ -35,6 +35,10 @@ module.exports.loop = function () {
 				runInitialise = true;
 				try {
 					mod.init();
+					if(Game.cpu.getUsed() > Game.cpu.tickLimit/2){
+						console.error("Skipped tick due to lack of cpu after loading script.");
+						return;
+					}
 				} catch (exception) {
 					console.error(mod.except(exception));
 				}

@@ -15,6 +15,8 @@
 #include "./basestate/stage7.h"
 #include "./basestate/stage8.h"
 
+#include "./building/building.h"
+
 #include "./creep/bodybuilder.h"
 
 using namespace screeps;
@@ -99,7 +101,7 @@ void setupFlags(){
                     }
                     JSObject baseStateFlag = baseStateFlags[0].as<JSObject>();
                     int type = baseStateFlag["secondaryColor"].as<int>();
-
+                    building_build(room);
                     switch(type){
                         case COLOR_RED://bootstrap
                             bootstrap_loop(room,baseStateFlag);
