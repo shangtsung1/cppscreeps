@@ -82,6 +82,14 @@ static inline String getNewCreepName(){
     tick->Memory.set("nameCounter",counter+1);
     return "C-"+TO_STRING((int)counter)+"-"+(tick->Game["shard"]["name"].as<String>());
 }
+static inline String getNewSpawnName(){
+    //increment counter;
+    number counter = tick->Memory["nameCounter"].as<number>();
+    tick->Memory.set("nameCounter",counter+1);
+    return "S-"+TO_STRING((int)counter);
+}
 
+bool isStructureAt(JSObject room, int x, int y, String structureType);
+bool isConstructionAt(JSObject room, int x, int y, String structureType);
 
 #endif //SCREEPS_API_H

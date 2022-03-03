@@ -199,3 +199,28 @@ number Util_spawnCreep(JSObject spawn,JSArray body, String name, JSObject opts){
     opts["memory"].as<JSObject>().set("roomSpawnedIn",spawn["room"]["name"].as<String>());
     return spawn.call<number>("spawnCreep",body,name,opts);
 }
+
+bool isStructureAt(JSObject room, int x, int y, String structureType){
+    String localStackTempString = LOOK_STRUCTURES;
+    JSArray arr = room.call<JSArray>("lookForAt",localStackTempString,x,y);
+    int iter=0;
+    JS_FOREACH(arr,iter){
+        if(strcmp(arr[iter]["structureType"].as<String>().c_str(),structureType.c_str()) == 0){
+            return true;
+        }
+    }
+    return false;
+}
+
+bool isConstructionAt(JSObject room, int x, int y, String structureType){
+    String localStackTempString = LOOK_CONSTRUCTION_SITES;
+    JSArray arr = room.call<JSArray>("lookForAt",localStackTempString,x,y);
+    int iter=0;
+    JS_FOREACH(arr,iter){
+        if(strcmp(arr[iter]["structureType"].as<String>().c_str(),structureType.c_str()) == 0){
+            return true;
+        }
+    }
+    return false;
+}
+

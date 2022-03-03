@@ -113,12 +113,128 @@ void building_setFlags(JSObject room){
     }
 }
 
-void building_bunkerlayout(JSObject room,JSObject flag){
+void _build(JSObject room, String type, int x, int y){
+    if(!isStructureAt(room, x, y, type)){
+        if(!isConstructionAt(room, x, y, type)) {
+            if (strcmp(type.c_str(), STRUCTURE_SPAWN) == 0) {
+                room.call<number>("createConstructionSite", x, y, type,getNewSpawnName());
+            } else {
+                room.call<number>("createConstructionSite", x, y, type);
+            }
+        }
+    }
+}
 
+void building_bunkerlayout(JSObject room,JSObject flag){
+    int lvl = room["controller"]["level"].as<int>();
+    int X = flag["pos"]["x"].as<int>();
+    int Y = flag["pos"]["y"].as<int>();
+    JSArray cons = flag.call<JSArray>("getConstructionSites");
+    if(LENGTH(cons)>10){
+        return;
+    }
+    switch(lvl){
+        case 8:
+            _build(room,STRUCTURE_POWER_SPAWN,X+1,Y-2);
+            _build(room,STRUCTURE_NUKER,X+2,Y-2);
+            _build(room,STRUCTURE_TOWER,X-2,Y);
+            _build(room,STRUCTURE_TOWER,X-2,Y-1);
+            _build(room,STRUCTURE_TOWER,X-2,Y-2);
+            _build(room,STRUCTURE_OBSERVER,X-2,Y+1);
+            _build(room,STRUCTURE_LINK,X,Y+1);
+            _build(room,STRUCTURE_SPAWN,X+2,Y+1);
+        case 7:
+            _build(room,STRUCTURE_TOWER,X-1,Y);
+            _build(room,STRUCTURE_FACTORY,X+1,Y);
+            _build(room,STRUCTURE_SPAWN,X+1,Y+2);
+        case 6:
+            _build(room,STRUCTURE_TERMINAL,X,Y-2);
+        case 5:
+            _build(room,STRUCTURE_LINK,X+2,Y-1);
+            _build(room,STRUCTURE_TOWER,X+2,Y);
+        case 4:
+            _build(room,STRUCTURE_STORAGE,X,Y-1);
+        case 3:
+            _build(room,STRUCTURE_TOWER,X-1,Y-2);
+        case 1:
+            _build(room,STRUCTURE_SPAWN,X-1,Y+2);
+            break;
+    }
 }
 
 void building_energylayout(JSObject room,JSObject flag){
-
+    int lvl = room["controller"]["level"].as<int>();
+    int X = flag["pos"]["x"].as<int>();
+    int Y = flag["pos"]["y"].as<int>();
+    JSArray cons = flag.call<JSArray>("getConstructionSites");
+    if(LENGTH(cons)>5){
+        return;
+    }
+    switch(lvl){
+        case 8:
+        case 7:
+            _build(room,STRUCTURE_EXTENSION,X,Y+4);
+            _build(room,STRUCTURE_EXTENSION,X-3,Y+4);
+            _build(room,STRUCTURE_EXTENSION,X-2,Y+4);
+            _build(room,STRUCTURE_EXTENSION,X-1,Y+4);
+            _build(room,STRUCTURE_EXTENSION,X+1,Y+4);
+            _build(room,STRUCTURE_EXTENSION,X+2,Y+4);
+            _build(room,STRUCTURE_EXTENSION,X+3,Y+4);
+            _build(room,STRUCTURE_EXTENSION,X+4,Y+4);
+            _build(room,STRUCTURE_EXTENSION,X+4,Y-4);
+            _build(room,STRUCTURE_EXTENSION,X+4,Y-2);
+            _build(room,STRUCTURE_EXTENSION,X+4,Y-1);
+            _build(room,STRUCTURE_EXTENSION,X+4,Y);
+            _build(room,STRUCTURE_EXTENSION,X+4,Y+1);
+            _build(room,STRUCTURE_EXTENSION,X+4,Y+2);
+        case 6:
+            _build(room,STRUCTURE_EXTENSION,X-4,Y+1);
+            _build(room,STRUCTURE_EXTENSION,X-4,Y+2);
+            _build(room,STRUCTURE_EXTENSION,X-4,Y+4);
+            _build(room,STRUCTURE_EXTENSION,X-3,Y-4);
+            _build(room,STRUCTURE_EXTENSION,X-2,Y-4);
+            _build(room,STRUCTURE_EXTENSION,X-1,Y-4);
+            _build(room,STRUCTURE_EXTENSION,X,Y-4);
+            _build(room,STRUCTURE_EXTENSION,X+1,Y-4);
+            _build(room,STRUCTURE_EXTENSION,X+2,Y-4);
+            _build(room,STRUCTURE_EXTENSION,X+3,Y-4);
+        case 5:
+            _build(room,STRUCTURE_EXTENSION,X+1,Y+3);
+            _build(room,STRUCTURE_EXTENSION,X,Y+3);
+            _build(room,STRUCTURE_EXTENSION,X+3,Y);
+            _build(room,STRUCTURE_EXTENSION,X-3,Y);
+            _build(room,STRUCTURE_EXTENSION,X-3,Y+3);
+            _build(room,STRUCTURE_EXTENSION,X+3,Y+3);
+            _build(room,STRUCTURE_EXTENSION,X-4,Y-4);
+            _build(room,STRUCTURE_EXTENSION,X-4,Y-2);
+            _build(room,STRUCTURE_EXTENSION,X-4,Y-1);
+            _build(room,STRUCTURE_EXTENSION,X-4,Y);
+        case 4:
+            _build(room,STRUCTURE_EXTENSION,X-3,Y-3);
+            _build(room,STRUCTURE_EXTENSION,X+2,Y-3);
+            _build(room,STRUCTURE_EXTENSION,X+3,Y-3);
+            _build(room,STRUCTURE_EXTENSION,X-2,Y+1);
+            _build(room,STRUCTURE_EXTENSION,X-2,Y+2);
+            _build(room,STRUCTURE_EXTENSION,X-2,Y+3);
+            _build(room,STRUCTURE_EXTENSION,X-1,Y+1);
+            _build(room,STRUCTURE_EXTENSION,X-1,Y+2);
+            _build(room,STRUCTURE_EXTENSION,X+1,Y+1);
+            _build(room,STRUCTURE_EXTENSION,X+1,Y+2);
+        case 3:
+            _build(room,STRUCTURE_EXTENSION,X,Y-3);
+            _build(room,STRUCTURE_EXTENSION,X+1,Y-1);
+            _build(room,STRUCTURE_EXTENSION,X+1,Y-2);
+            _build(room,STRUCTURE_EXTENSION,X+2,Y-1);
+            _build(room,STRUCTURE_EXTENSION,X+2,Y-1);
+        case 2:
+            _build(room,STRUCTURE_EXTENSION,X-1,Y-1);
+            _build(room,STRUCTURE_EXTENSION,X-2,Y-2);
+            _build(room,STRUCTURE_EXTENSION,X-2,Y-1);
+            _build(room,STRUCTURE_EXTENSION,X-1,Y-2);
+            _build(room,STRUCTURE_EXTENSION,X-2,Y-3);
+        case 1:
+            break;
+    }
 }
 
 void building_build(JSObject room){
@@ -130,6 +246,6 @@ void building_build(JSObject room){
     }
     JSArray bunkerFlags = Util_flagsInRoomPS(rName, COLOR_CYAN, COLOR_BLUE);
     if(LENGTH(bunkerFlags) > 0){
-        building_bunkerlayout(room,bunkerFlags[0]);
+        building_energylayout(room,bunkerFlags[0]);
     }
 }
