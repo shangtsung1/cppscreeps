@@ -50,6 +50,9 @@ JSArray Util_getFlagsAtP(String roomName,number x, number y, number primaryColor
 JSArray Util_getFlagsAtS(String roomName,number x, number y, number secondaryColor);
 JSArray Util_getFlagsAtPS(String roomName,number x, number y, number primaryColor, number secondaryColor);
 
+number Util_distanceByPathBetween(number x, number y, String roomName, number x2, number y2, String roomName2,number range,bool swamps);
+
+
 Map<String,JSObject> rooms();
 Map<String,JSObject> creeps();
 Map<String,JSObject> flags();
@@ -74,6 +77,7 @@ JSArray Util_flagsInRoom(String roomName);
 JSArray Util_flagsInRoomP(String roomName, number primaryColor);
 JSArray Util_flagsInRoomS(String roomName, number secondaryColor);
 JSArray Util_flagsInRoomPS(String roomName, number primaryColor, number secondaryColor);
+JSArray Util_flagsInRoomNearPS(String roomName,number x, number y,number dist, number primaryColor, number secondaryColor);
 
 number Util_spawnCreep(JSObject spawn,JSArray body, String name, JSObject opts);
 static inline String getNewCreepName(){
@@ -91,5 +95,8 @@ static inline String getNewSpawnName(){
 
 bool isStructureAt(JSObject room, int x, int y, String structureType);
 bool isConstructionAt(JSObject room, int x, int y, String structureType);
+JSObject structureAt(JSObject room, int x, int y, String structureType);
+JSObject constructionAt(JSObject room, int x, int y, String structureType);
+
 
 #endif //SCREEPS_API_H

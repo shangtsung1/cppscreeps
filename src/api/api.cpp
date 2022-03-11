@@ -127,6 +127,10 @@ JSArray Util_flagsInRoomPS(String roomName, number primaryColor, number secondar
     return tick->Utils.call<JSArray>("flagsInRoomPS",roomName,primaryColor,secondaryColor);
 }
 
+JSArray Util_flagsInRoomNearPS(String roomName,number x, number y,number range, number primaryColor, number secondaryColor){
+    return tick->Utils.call<JSArray>("flagsInRoomNearPS",roomName,x,y,range,primaryColor,secondaryColor);
+}
+
 bool Util_flagAt(String roomName,number x, number y){
     return tick->Utils.call<bool>("flagAt",roomName,x,y);
 }
@@ -191,6 +195,10 @@ JSArray Util_getFlagsAtPS(String roomName,number x, number y, number primaryColo
     return tick->Utils.call<JSArray>("getFlagsAtPS",roomName,x,y,primaryColor,secondaryColor);
 }
 
+number Util_distanceByPathBetween(number x, number y, String roomName, number x2, number y2, String roomName2,number range,bool swamps){
+    return tick->Utils.call<number>("distanceByPathBetween",x, y, roomName, x2, y2, roomName2,range,swamps);
+}
+
 number Util_spawnCreep(JSObject spawn,JSArray body, String name, JSObject opts){
     tick->Utils.call<void>("setSpawning",spawn);
     if(opts["memory"].isUndefined()){
@@ -224,3 +232,26 @@ bool isConstructionAt(JSObject room, int x, int y, String structureType){
     return false;
 }
 
+JSObject constructionAt(JSObject room, int x, int y, String structureType){
+    String localStackTempString = LOOK_CONSTRUCTION_SITES;
+    JSArray arr = room.call<JSArray>("lookForAt",localStackTempString,x,y);
+    int iter=0;
+    JS_FOREACH(arr,iter){
+        if(strcmp(arr[iter]["structureType"].as<String>().c_str(),structureType.c_str()) == 0){
+            return arr[iter];
+        }
+    }
+    return null;
+}
+
+JSObject structureAt(JSObject room, int x, int y, String structureType){
+    String localStackTempString = LOOK_STRUCTURES;
+    JSArray arr = room.call<JSArray>("lookForAt",localStackTempString,x,y);
+    int iter=0;
+    JS_FOREACH(arr,iter){
+        if(strcmp(arr[iter]["structureType"].as<String>().c_str(),structureType.c_str()) == 0){
+            return arr[iter];
+        }
+    }
+    return null;
+}

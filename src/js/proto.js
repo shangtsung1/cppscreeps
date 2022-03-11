@@ -41,6 +41,10 @@ Utils.flagsInRoomS = function(roomName,secondaryColor){
 Utils.flagsInRoomPS = function(roomName,primaryColor,secondaryColor){
 	return Game.rooms[roomName].find(FIND_FLAGS,{filter: f => f.color == primaryColor && f.secondaryColor == secondaryColor});
 };
+Utils.flagsInRoomNearPS = function(roomName, x,  y, dist, primaryColor,secondaryColor){
+	return (new RoomPosition(x,y,roomName)).findInRange(FIND_FLAGS,dist,{filter: f => f.color == primaryColor && f.secondaryColor == secondaryColor});
+};
+
 Utils.flagAt = function(roomName,x,y){
 	return (new RoomPosition(x,y,roomName)).lookFor(LOOK_FLAGS).length > 0;
 };
@@ -94,6 +98,11 @@ Utils.spawnsNotSpawning = function(roomName){
 }
 Utils.setSpawning = function(spawn){
 	spawn.spawned = true;
+}
+
+Utils.distanceByPathBetween = function(x, y, roomName, x2, y2, roomName2,range,swamps){
+	let opts = {swampCost:swamps?1:5};
+	return PathFinder.search(new RoomPosition(x,y,roomName),{pos:new RoomPosition(x2,y2,roomName2),range:range},opts).path.length;
 }
 
 RoomPosition.prototype.getPathRangeTo = function(x2,y2,rName,opts={}){

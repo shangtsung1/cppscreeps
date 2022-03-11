@@ -17,7 +17,8 @@ JSArray BodyBuilder_getBody(JSObject room,CreepDefinition def){
         number energyAvailable = room["energyCapacityAvailable"].as<number>();
         body.call<void>("push",std::string(CARRY));
         body.call<void>("push",std::string(MOVE));
-        for(int i = 0 ; (i < (energyAvailable/300) && i < def.maxSize);i++){
+        energyAvailable = energyAvailable - 100;
+        for(int i = 0 ; (i < (energyAvailable/100) && i < def.maxSize);i++){
             body.call<void>("push",std::string(WORK));
         }
     }
