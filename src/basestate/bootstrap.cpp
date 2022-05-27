@@ -11,6 +11,9 @@
 #include "../flags/source_mine.h"
 #include "../flags/mineral_mine.h"
 #include "../flags/controller_upgrade.h"
+#include "../flags/builder.h"
+#include "../flags/repair.h"
+#include "../flags/emergency_dude.h"
 
 void bootstrap_loop(JSObject room,JSObject baseFlag){
     if(!room["storage"].isUndefined()){
@@ -23,4 +26,8 @@ void bootstrap_loop(JSObject room,JSObject baseFlag){
     source_mine_doRoutine(room);
     mineral_mine_doRoutine(room);
     controller_upgrade_doRoutine(room);
+    builder_doRoutine(room);
+    repair_doRoutine(room);
+    emergency_dude_doRoutine(room);
+
 }

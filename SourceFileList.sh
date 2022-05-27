@@ -16,3 +16,6 @@ export SRC_FILES=$SRC_FILES src\building\building.cpp
 export SRC_FILES=$SRC_FILES src\flags\source_mine.cpp
 export SRC_FILES=$SRC_FILES src\flags\controller_upgrade.cpp
 export SRC_FILES=$SRC_FILES src\flags\mineral_mine.cpp
+export SRC_FILES=$SRC_FILES src\flags\builder.cpp
+export SRC_FILES=$SRC_FILES src\flags\repair.cpp
+export SRC_FILES=$SRC_FILES src\flags\emergency_dude.cpp

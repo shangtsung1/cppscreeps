@@ -25,6 +25,11 @@ switch(primaryColor){
                     source_mine_workerTask(flag,creep);
                 }
                 break;
+            case COLOR_GREEN://controller
+                if(strcmp(bodyType.c_str(), "upgrader") == 0){
+                    controller_upgrade_upgradeTask(flag,creep);
+                }
+                break;
             default:
                 printf("Unhandled ECON Flag Color (%i,%i)\n",primaryColor,secondaryColor);
                 break;
@@ -36,13 +41,33 @@ switch(primaryColor){
         //break;
     case COLOR_GREEN://BaseTask
         switch(secondaryColor){
+            case COLOR_GREEN:
+                if(strcmp(bodyType.c_str(), "worker") == 0){
+                    repair_repairTask(flag,creep);
+                }
+            break;
+            case COLOR_YELLOW:
+                if(strcmp(bodyType.c_str(), "worker") == 0){
+                    builder_builderTask(flag,creep);
+                }
+                break;
             default:
                 printf("Unhandled BaseTask Flag Color (%i,%i)\n",primaryColor,secondaryColor);
                 break;
         }
     break;
-    //case COLOR_YELLOW://
-        //break;
+    case COLOR_YELLOW://R&E
+        switch(secondaryColor){
+            case COLOR_RED:
+                if(strcmp(bodyType.c_str(), "worker") == 0){
+                    emergency_dude_doTaskW(flag,creep);
+                }
+                else if(strcmp(bodyType.c_str(), "hauler") == 0){
+                    emergency_dude_doTaskH(flag,creep);
+                }
+                break;
+        }
+        break;
     //case COLOR_ORANGE://
         //break;
     //case COLOR_BROWN://SEASONAL

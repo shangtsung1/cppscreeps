@@ -2,6 +2,7 @@
 #include <emscripten/val.h>
 #include <emscripten/bind.h>
 #include <stdio.h>
+#include <vector>
 
 #include <cppreeps.hpp>
 #include <Constants.hpp>
@@ -171,6 +172,18 @@ void spawnCreeps(String flagName, JSObject flag) {
         for (int priority = 0; priority < 5; priority++) {
             JS_FOREACH(spawnDefs, i)
             {
+                JSArray creeps = creepsArray();
+                int clen = LENGTH(creeps);
+                for(int jj = 0; jj < clen; jj++){
+                    if(strcmp(spawnDefs[i]["bodyType"].as<String>().c_str(), creeps[jj]["memory"]["bodyType"].as<String>().c_str()) == 0){
+                        String fN = creeps[jj]["memory"]["flagName"].as<String>();
+                        if(!Util_flagExists(fN)){
+                            creeps[jj]["memory"].set("flagName",NAME(flag));
+                            flag["memory"]["spawnDefs"][i].set("currentCreep",creeps[jj]["name"].as<String>());
+                            goto loopEnd;
+                        }
+                    }
+                }
                 if(LENGTH(spawnCapableSpawns) == 0){
                     return;
                 }
@@ -194,6 +207,8 @@ void spawnCreeps(String flagName, JSObject flag) {
                         spawnCapableSpawns.call<void>("shift");
                     }
                 }
+                loopEnd:
+                    continue;
             }
         }
     }
@@ -206,6 +221,9 @@ void spawnCreeps(String flagName, JSObject flag) {
 #include "./flags/source_mine.h"
 #include "./flags/mineral_mine.h"
 #include "./flags/controller_upgrade.h"
+#include "./flags/builder.h"
+#include "./flags/repair.h"
+#include "./flags/emergency_dude.h"
 void processCreepActions(String flagName, JSObject flag){
     int ii = 0;
     JSArray spawnDefs = flag["memory"]["spawnDefs"].as<JSArray>();

@@ -210,7 +210,6 @@ void source_mine_haulerTask(JSObject flag,JSObject creep){
     JSObject roomSpawnedIn = tick->Game["rooms"][creep["memory"]["roomSpawnedIn"].as<String>()].as<JSObject>();
     JSObject flagMem = flag["memory"].as<JSObject>();
     JSObject src = flag.call<JSObject>("getSource");
-    number cLevel = roomSpawnedIn["controller"]["level"].as<number>();
     if(creep["memory"]["full"].isUndefined()){
         creep["memory"].set("full",false);
     }
@@ -220,9 +219,19 @@ void source_mine_haulerTask(JSObject flag,JSObject creep){
     else if(creep["store"].call<number>("getUsedCapacity") == 0){
         creep["memory"].set("full",false);
     }
-    if(cLevel < 6){
+    //if(flag["room"]["storage"].isUndefined()){
+        String stackLocalString = RESOURCE_ENERGY;
         if(creep["memory"]["full"].as<bool>()) {
-
+            //TODO: optimise
+            JSArray toFill = flag["room"].call<JSArray>("getEmptySpawnContainers");
+            if(LENGTH(toFill) > 0){
+                JSObject fillin = creep["pos"].call<JSObject>("findClosestByPath",toFill);
+                if (!creep["pos"].call<bool>("isNearTo", fillin)) {
+                    creep.call<void>("moveTo", fillin);
+                } else {
+                    creep.call<void>("transfer",fillin,stackLocalString);
+                }
+            }
         }
         else {
             JSObject container = tick->Game.call<JSObject>("getObjectById", flagMem["containerId"]);
@@ -232,10 +241,9 @@ void source_mine_haulerTask(JSObject flag,JSObject creep){
                 if (!creep["pos"].call<bool>("isNearTo", container)) {
                     creep.call<void>("moveTo", container);
                 } else {
-                    String stackLocalString = RESOURCE_ENERGY;
                     creep.call<void>("withdraw",container,stackLocalString);
                 }
             }
         }
-    }
+   // }
 }

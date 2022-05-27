@@ -9,6 +9,6 @@
 #include <cppreeps.hpp>
 
 void controller_upgrade_doRoutine(JSObject room);
-//void controller_upgrade_setFlags(JSObject room);
+void controller_upgrade_upgradeTask(JSObject flag,JSObject creep);
 
 #endif //SCREEPS_CONTROLLER_UPGRADE_H

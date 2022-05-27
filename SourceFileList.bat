@@ -17,5 +17,8 @@ SET SRC_FILES=%SRC_FILES% src\creep\bodybuilder.cpp
 SET SRC_FILES=%SRC_FILES% src\flags\source_mine.cpp
 SET SRC_FILES=%SRC_FILES% src\flags\controller_upgrade.cpp
 SET SRC_FILES=%SRC_FILES% src\flags\mineral_mine.cpp
+SET SRC_FILES=%SRC_FILES% src\flags\builder.cpp
+SET SRC_FILES=%SRC_FILES% src\flags\repair.cpp
+SET SRC_FILES=%SRC_FILES% src\flags\emergency_dude.cpp
 
 Rem SET SRC_FILES=%SRC_FILES% src\.cpp

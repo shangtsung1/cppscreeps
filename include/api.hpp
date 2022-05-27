@@ -25,10 +25,10 @@ static inline JSObject NEWPOS(number x, number y, String roomName){ return tick-
      int _arrLen = jsArray["length"].as<int>();  \
      for (iterator = 0; iterator < _arrLen; iterator++)
 
-JSObject createFlag(JSObject room,number x,number y,String name,number color,number secondaryColor);
-JSObject createFlag(JSObject room,number x,number y,number color,number secondaryColor);
-JSObject createFlag(JSObject pos,String name,number color,number secondaryColor);
-JSObject createFlag(JSObject pos,number color,number secondaryColor);
+number createFlag(JSObject room,number x,number y,String name,number color,number secondaryColor);
+number createFlag(JSObject room,number x,number y,number color,number secondaryColor);
+number createFlag(JSObject pos,String name,number color,number secondaryColor);
+number createFlag(JSObject pos,number color,number secondaryColor);
 
 bool Util_flagAt(String roomName,number x, number y);
 bool Util_flagAtP(String roomName,number x, number y, number primaryColor);
@@ -55,6 +55,10 @@ number Util_distanceByPathBetween(number x, number y, String roomName, number x2
 
 Map<String,JSObject> rooms();
 Map<String,JSObject> creeps();
+inline static JSArray creepsArray(){
+    JSObject creepsMap = tick->Game["creeps"].as<JSObject>();
+    return val::global("Object").call<JSArray>("values",creepsMap);
+};
 Map<String,JSObject> flags();
 Map<String,JSObject> roomsMem();
 Map<String,JSObject> creepsMem();
