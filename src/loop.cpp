@@ -167,7 +167,6 @@ void spawnCreeps(String flagName, JSObject flag) {
     if (!flag["room"].isNull() && !flag["room"]["controller"].isNull() && flag["room"]["controller"]["level"].as<number>() > 0){
         JSObject room = flag["room"].as<JSObject>();
         JSArray spawnCapableSpawns = spawnsNotSpawning(NAME(room));
-
         JSArray spawnDefs = flag["memory"]["spawnDefs"].as<JSArray>();
         for (int priority = 0; priority < 5; priority++) {
             JS_FOREACH(spawnDefs, i)

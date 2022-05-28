@@ -14,17 +14,16 @@ using namespace screeps;
 JSArray BodyBuilder_getBody(JSObject room,CreepDefinition def){
     JSArray body = val::array();
     if (strcmp(def.bodyType.c_str(), "miner") == 0){
-        number energyAvailable = room["energyCapacityAvailable"].as<number>()-200;
+        number energyAvailable = room["energyCapacityAvailable"].as<number>()-100;
         body.call<void>("push",std::string(CARRY));
         body.call<void>("push",std::string(MOVE));
-        for(int i = 0 ; (i < (energyAvailable/100) && i < def.maxSize);i++){
-            printf("%i %f %f\n",i,(energyAvailable/100),room["energyCapacityAvailable"].as<number>());
+        for(int i = 0 ; (i < ((energyAvailable/100)-1) && i < def.maxSize);i++){
             body.call<void>("push",std::string(WORK));
         }
     }
     else if (strcmp(def.bodyType.c_str(), "hauler") == 0){
-        number energyAvailable = room["energyCapacityAvailable"].as<number>()-100;
-        for(int i = 0 ; (i < (energyAvailable/100) && i < def.maxSize);i++){
+        number energyAvailable = room["energyCapacityAvailable"].as<number>();
+        for(int i = 0 ; (i < ((energyAvailable/100)-1) && i < def.maxSize);i++){
             body.call<void>("push",std::string(CARRY));
             body.call<void>("push",std::string(MOVE));
         }
@@ -39,7 +38,7 @@ JSArray BodyBuilder_getBody(JSObject room,CreepDefinition def){
         }
     }
     else if (strcmp(def.bodyType.c_str(), "worker") == 0){
-        number energyAvailable = room["energyCapacityAvailable"].as<number>()-100;
+        number energyAvailable = room["energyCapacityAvailable"].as<number>();
         for(int i = 0 ; (i < ((energyAvailable/250)-1) && i < def.maxSize);i++){
             body.call<void>("push",std::string(CARRY));
             body.call<void>("push",std::string(MOVE));
