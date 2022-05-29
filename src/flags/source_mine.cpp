@@ -206,6 +206,7 @@ void source_mine_workerTask(JSObject flag,JSObject creep){
 
     }
 }
+
 void source_mine_haulerTask(JSObject flag,JSObject creep){
     JSObject roomSpawnedIn = tick->Game["rooms"][creep["memory"]["roomSpawnedIn"].as<String>()].as<JSObject>();
     JSObject flagMem = flag["memory"].as<JSObject>();
@@ -231,6 +232,24 @@ void source_mine_haulerTask(JSObject flag,JSObject creep){
                 } else {
                     creep.call<void>("transfer",fillin,stackLocalString);
                 }
+            }
+            else{
+                //give the energy to our controller upgrader.
+                //TODO: replace with C
+                EM_ASM({
+                        let creepName = UTF8ToString($0);
+                        if(Game["creeps"][creepName] != null){
+                            let c = Game["creeps"][creepName].pos.findClosestByRange(FIND_MY_CREEPS,
+                                                                                 {filter: f => f.memory.bodyType == "upgrader" && f.store.getUsedCapacity(RESOURCE_ENERGY) < f.store.getCapacity(RESOURCE_ENERGY)});
+                            if (c != null) {
+                                if (!c.pos.isNearTo(Game["creeps"][creepName])) {
+                                    Game["creeps"][creepName].moveTo(c);
+                                } else {
+                                    Game["creeps"][creepName].transfer(c, RESOURCE_ENERGY);
+                                }
+                            }
+                        }
+                    },NAME(creep).c_str());
             }
         }
         else {

@@ -14,35 +14,19 @@ void println(String s){
 
 //TODO: mod createFlag to avoid white flags.
 number createFlag(JSObject room,number x,number y,String name,number color,number secondaryColor){
-    JSObject jo = room.call<JSObject>("createFlag",x,y,name,color,secondaryColor);
-    if(strcmp(jo.typeof().as<String>().c_str(),"number") != 0){
-        return 0;
-    }
-    return jo.as<double>();
+    return room.call<number>("createFlagC",x,y,name,color,secondaryColor);
 }
 
 number createFlag(JSObject room,number x,number y,number color,number secondaryColor){
-    JSObject jo = room.call<JSObject>("createFlag",x,y,null,color,secondaryColor);
-    if(strcmp(jo.typeof().as<String>().c_str(),"number") != 0){
-        return 0;
-    }
-    return jo.as<double>();
+    return room.call<number>("createFlagC",x,y,null,color,secondaryColor);
 }
 
 number createFlag(JSObject pos,String name,number color,number secondaryColor){
-    JSObject jo = pos.call<JSObject>("createFlag",name,color,secondaryColor);
-    if(strcmp(jo.typeof().as<String>().c_str(),"number") != 0){
-        return 0;
-    }
-    return jo.as<double>();
+    return pos.call<number>("createFlagC",name,color,secondaryColor);
 }
 
 number createFlag(JSObject pos,number color,number secondaryColor){
-    JSObject jo = pos.call<JSObject>("createFlag",null,color,secondaryColor);
-    if(strcmp(jo.typeof().as<String>().c_str(),"number") != 0){
-        return 0;
-    }
-    return jo.as<double>();
+    return pos.call<number>("createFlagC",null,color,secondaryColor);
 }
 
 Map<String,JSObject> rooms(){

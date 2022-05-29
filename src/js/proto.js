@@ -1,3 +1,19 @@
+Room.prototype.createFlagC = function(x, y, name, color, secondaryColor){
+	let result = this.createFlag(x, y, name, color, secondaryColor);
+	if(typeof result == "number"){
+		return 0;
+	}
+	return result;
+};
+
+RoomPosition.prototype.createFlagC = function(name, color, secondaryColor){
+	let result = this.createFlag(name, color, secondaryColor);
+	if(typeof result == "number"){
+		return 0;
+	}
+	return result;
+};
+
 
 
 var Utils = {};
