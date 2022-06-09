@@ -22,7 +22,7 @@ void controller_upgrade_setupMemory(JSObject room,JSObject flag) {
         def.bodyType = "upgrader";
         def.offRoad = true;
         def.maxSize = 20;
-        def.priority = 3;
+        def.priority = 4;
         flagMem["spawnDefs"].call<void>("push", def);
     }
     if (LENGTH(flagMem["spawnDefs"].as<JSArray>()) == 1) {
@@ -30,7 +30,7 @@ void controller_upgrade_setupMemory(JSObject room,JSObject flag) {
         def.bodyType = "upgrader";
         def.offRoad = true;
         def.maxSize = 20;
-        def.priority = 3;
+        def.priority = 4;
         flagMem["spawnDefs"].call<void>("push", def);
     }
 }

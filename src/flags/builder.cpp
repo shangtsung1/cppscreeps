@@ -54,7 +54,7 @@ void builder_setFlags(JSObject room){
                 return;
             }
         }
-        room.call<number>("createFlag", cons[index]["pos"]["x"].as<number>(), cons[index]["pos"]["y"].as<number>(),null,COLOR_GREEN, COLOR_YELLOW);
+        createFlag(room,cons[index]["pos"]["x"].as<number>(), cons[index]["pos"]["y"].as<number>(),COLOR_GREEN, COLOR_YELLOW);
     }
 }
 
@@ -107,7 +107,12 @@ void builder_doRoutine(JSObject room){
     builder_setFlags(room);
     JSArray flags = Util_flagsInRoomPS(NAME(room), COLOR_GREEN, COLOR_YELLOW);
     int i = 0;
+    String constant = LOOK_STRUCTURES;
     JS_FOREACH(flags,i){
+        if(flags[i].call<JSArray>("getConstructionSites")["length"].as<number>() == 0) {
+            flags[i].call<JSObject>("remove");
+            continue;
+        }
         builder_setupMemory(room,flags[i].as<JSObject>());
     }
 }
